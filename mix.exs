@@ -7,6 +7,7 @@ defmodule Nexidobata.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
+      escript: escript(),
       deps: deps()
     ]
   end
@@ -21,6 +22,12 @@ defmodule Nexidobata.MixProject do
     [
       {:absinthe, "~> 1.4"},
       {:httpoison, "~> 1.4"}
+    ]
+  end
+
+  defp escript do
+    [
+      main_module: Nexidobata.CLI
     ]
   end
 end
