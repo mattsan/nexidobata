@@ -19,7 +19,8 @@ defmodule Nexidobata.MixProject do
 
   defp deps do
     [
-      {:absinthe, "~> 1.4"}
+      {:absinthe, "~> 1.4"},
+      {:httpoison, "~> 1.4"}
     ]
   end
 end
