@@ -3,16 +3,9 @@ defmodule Nexidobata do
   Documentation for Nexidobata.
   """
 
-  @doc """
-  Hello world.
+  @idobata_url URI.parse("https://idobata.io")
+  @graphql_url URI.parse("https://api.idobata.io/graphql")
 
-  ## Examples
-
-      iex> Nexidobata.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  def idobata_url, do: @idobata_url
+  def graphql_url, do: @graphql_url
 end
