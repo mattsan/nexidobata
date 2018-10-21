@@ -40,10 +40,11 @@ defmodule Nexidobata.CLI do
             [] -> IO.read(:stdio, :all)
             _ -> Enum.join(messages, " ")
           end
+
         Post.post(bearer(), org_slug, room_name, message, options)
 
       {_, messages, errors} ->
-        IO.puts "error #{messages} #{inspect(errors)}"
+        IO.puts("error #{messages} #{inspect(errors)}")
     end
   end
 
@@ -61,8 +62,11 @@ defmodule Nexidobata.CLI do
     end)
     |> Enum.sort()
     |> Enum.each(fn
-      {slug, room_name} when is_nil(org_slug) or (slug == org_slug) -> IO.puts("#{slug}/#{room_name}")
-      _ -> :ok
+      {slug, room_name} when is_nil(org_slug) or slug == org_slug ->
+        IO.puts("#{slug}/#{room_name}")
+
+      _ ->
+        :ok
     end)
   end
 

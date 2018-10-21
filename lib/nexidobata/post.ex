@@ -4,16 +4,18 @@ defmodule Nexidobata.Post do
   def post(bearer, org_slug, room_name, message, options \\ []) do
     room_ids =
       rooms(bearer)
-      |> Enum.filter(& &1.node.organization.slug == org_slug && &1.node.name == room_name)
+      |> Enum.filter(&(&1.node.organization.slug == org_slug && &1.node.name == room_name))
       |> Enum.map(& &1.node.id)
 
     case room_ids do
       [room_id] ->
         data = Poison.encode!(%{query: mutation(room_id, message, options)})
+
         headers = %{
           "Content-Type" => "application/json",
           "Authorization" => "Bearer #{bearer}"
         }
+
         post(data, headers)
 
       _ ->
@@ -21,6 +23,7 @@ defmodule Nexidobata.Post do
         Failed to posting message.
         Reason: room #{org_slug}/#{room_name} didn't identified.
         """)
+
         exit({:shtudown, 1})
     end
   end
@@ -37,6 +40,7 @@ defmodule Nexidobata.Post do
         Body:
         #{resp.body}
         """)
+
         exit({:shutdown, 1})
 
       {:error, %HTTPoison.Error{} = error} ->
@@ -44,6 +48,7 @@ defmodule Nexidobata.Post do
         Failed to posting a message.
         Reason: #{Exception.message(error)}
         """)
+
         exit({:shutdown, 1})
     end
   end
@@ -56,6 +61,7 @@ defmodule Nexidobata.Post do
             original_message,
             get_in(options, [:format]) || "PLAIN"
           }
+
         pre ->
           {
             """
@@ -81,15 +87,15 @@ defmodule Nexidobata.Post do
       end
 
     """
-      mutation {
-        createMessage(input: {
-          roomId: "#{room_id}",
-          source: "#{message}",
-          format: #{format}
-        }) {
-          clientMutationId
-        }
+    mutation {
+      createMessage(input: {
+        roomId: "#{room_id}",
+        source: "#{message}",
+        format: #{format}
+      }) {
+        clientMutationId
       }
-      """
+    }
+    """
   end
 end

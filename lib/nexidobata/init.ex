@@ -1,12 +1,14 @@
 defmodule Nexidobata.Init do
   def init(email, password) do
     url = URI.merge(Nexidobata.idobata_url(), "/oauth/token")
+
     {:ok, data} =
       Poison.encode(%{
         grant_type: "password",
         username: email,
         password: password
       })
+
     headers = %{"Content-Type" => "application/json"}
 
     case HTTPoison.post(url, data, headers) do
@@ -26,6 +28,7 @@ defmodule Nexidobata.Init do
         Body:
         #{resp.body}
         """)
+
         exit({:shutdown, 1})
 
       {:error, %HTTPoison.Error{} = error} ->
@@ -33,6 +36,7 @@ defmodule Nexidobata.Init do
         Failed to initialize.
         Reason: #{Exception.message(error)}
         """)
+
         exit({:shutdown, 1})
     end
   end

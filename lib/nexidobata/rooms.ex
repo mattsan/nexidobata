@@ -13,13 +13,13 @@ defmodule Nexidobata.Rooms do
   } } } } }
   """
 
-  defmodule Organization, do: defstruct [:slug]
-  defmodule Node, do: defstruct [:id, :name, :organization]
-  defmodule Edge, do: defstruct [:node]
-  defmodule Rooms, do: defstruct [:edges]
-  defmodule Viewer, do: defstruct [:rooms]
-  defmodule Data, do: defstruct [:viewer]
-  defmodule Response, do: defstruct [:data]
+  defmodule(Organization, do: defstruct([:slug]))
+  defmodule(Node, do: defstruct([:id, :name, :organization]))
+  defmodule(Edge, do: defstruct([:node]))
+  defmodule(Rooms, do: defstruct([:edges]))
+  defmodule(Viewer, do: defstruct([:rooms]))
+  defmodule(Data, do: defstruct([:viewer]))
+  defmodule(Response, do: defstruct([:data]))
 
   alias Nexidobata.Rooms.{Response, Data, Viewer, Rooms, Edge, Node, Organization}
 
@@ -43,6 +43,7 @@ defmodule Nexidobata.Rooms do
 
   def rooms(bearer) do
     data = Poison.encode!(%{query: @room_list_query})
+
     headers = %{
       "Content-Type" => "application/json",
       "Authorization" => "Bearer #{bearer}"
@@ -59,6 +60,7 @@ defmodule Nexidobata.Rooms do
         Body:
         #{resp.body}
         """)
+
         exit({:shutdown, 1})
 
       {:error, %HTTPoison.Error{} = error} ->
@@ -66,6 +68,7 @@ defmodule Nexidobata.Rooms do
         Failed to listing rooms.
         Reason: #{Exception.message(error)}
         """)
+
         exit({:shutdown, 1})
     end
   end
